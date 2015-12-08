@@ -267,19 +267,14 @@ namespace MTD_Proj_01
                 xaxis_geom.Children.Add(new LineGeometry(
                     new Point(x, y-5),
                     new Point(x, y+5)));
-                i++;
+               
                 FormattedText text = new FormattedText(i.ToString(),
                 CultureInfo.GetCultureInfo("en-us"),
                 FlowDirection.LeftToRight,
                 new Typeface("Verdana"),
-                10,Brushes.Black);
-
-                DrawingVisual drawingVisual = new DrawingVisual();
-                DrawingContext drawingContext= drawingVisual.RenderOpen();
-                drawingContext.DrawText(text, new Point(x, y+6));
-               // xaxis_geom.Children.Add((DrawingGroup)drawingContext);
-                //xaxis_geom.Children.Add(new FormattedText(i,));
-
+                8,Brushes.Black);
+                xaxis_geom.Children.Add(text.BuildGeometry(new Point(x, y + 6)));
+                i++;
             }
 
             Path xaxis_path = new Path();
