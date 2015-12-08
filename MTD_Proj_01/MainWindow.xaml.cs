@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -218,16 +218,75 @@ namespace MTD_Proj_01
                 //Canvas.SetLeft(l2, ln2.X1 + 1);
                 //myChart.Children.Add(l2);
             }
+
+
             Label label = new Label();
-            label.Content = string.Join(" Z",sorted);
+            label.Content = string.Join(" Z", sorted);
             Canvas.SetTop(label, 120);
-            Canvas.SetLeft(label,0);
+            Canvas.SetLeft(label, 0);
             myChart.Children.Add(label);
             Label label2 = new Label();
-            label2.Content = "CMAX= "+ tasks.Last().end[M2];
+            var cMax = tasks.Last().end[M2];
+            label2.Content = "CMAX= " + cMax;
             Canvas.SetTop(label2, 150);
             Canvas.SetLeft(label2, 0);
             myChart.Children.Add(label2);
+            //int step, last;
+            AxisX(cMax, 20,25);
+            AxisX(cMax, 20, 85);
+
+            //GeometryGroup xaxis_geom2 = new GeometryGroup();
+            //xaxis_geom2.Children.Add(new LineGeometry(
+            //    new Point(30, 25), new Point(last, 25)));
+            //for (double x = 30; x <= last; x += step)
+            //{
+            //    xaxis_geom2.Children.Add(new LineGeometry(
+            //        new Point(x, 20),
+            //        new Point(x, 30)));
+            //}
+
+            //Path xaxis_path2 = new Path();
+            //xaxis_path2.StrokeThickness = 2;
+            //xaxis_path2.Stroke = Brushes.Black;
+            //xaxis_path2.Data = xaxis_geom2;
+            //myChart.Children.Add(xaxis_path2);
+
+        }
+
+        private void AxisX(int cMAX,  int step, int y)
+        {
+            //step = 20;
+            var last = 30 + cMAX * 20;
+            var i = 0;
+            GeometryGroup xaxis_geom = new GeometryGroup();
+            xaxis_geom.Children.Add(new LineGeometry(
+                new Point(30, y), new Point(last, y)));
+            for (double x = 30; x <= last; x += step)
+            {
+
+                xaxis_geom.Children.Add(new LineGeometry(
+                    new Point(x, y-5),
+                    new Point(x, y+5)));
+                i++;
+                FormattedText text = new FormattedText(i.ToString(),
+                CultureInfo.GetCultureInfo("en-us"),
+                FlowDirection.LeftToRight,
+                new Typeface("Verdana"),
+                10,Brushes.Black);
+
+                DrawingVisual drawingVisual = new DrawingVisual();
+                DrawingContext drawingContext= drawingVisual.RenderOpen();
+                drawingContext.DrawText(text, new Point(x, y+6));
+               // xaxis_geom.Children.Add((DrawingGroup)drawingContext);
+                //xaxis_geom.Children.Add(new FormattedText(i,));
+
+            }
+
+            Path xaxis_path = new Path();
+            xaxis_path.StrokeThickness = 2;
+            xaxis_path.Stroke = Brushes.Black;
+            xaxis_path.Data = xaxis_geom;
+            myChart.Children.Add(xaxis_path);
         }
 
         private void DrawChartTask(MachineTask task, int m, int w)
@@ -254,7 +313,6 @@ namespace MTD_Proj_01
             Canvas.SetTop(l, w);
             Canvas.SetLeft(l, ln.X1 + 1);
             myChart.Children.Add(l);
-            
         }
 
         public Color[] colorProperty
