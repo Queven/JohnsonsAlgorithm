@@ -19,9 +19,8 @@
         <Label x:Name="label_Copy"  Grid.Row="0" Content="Liczba zadań:" HorizontalAlignment="Left" Margin="106,4,0,0" VerticalAlignment="Top" Width="96"/>
         <TextBox x:Name="NumberOfTask" Grid.Row="0" HorizontalAlignment="Left" Height="23" Margin="106,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <DataGrid x:Name="myGrid" Grid.Row="0" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top" Width="497" Height="100"/>
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Row="1">
-            <Canvas Name="myChart" Grid.Row="1" HorizontalAlignment="Left" Height="100" Margin="10,50"  VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True"  />
-        </ScrollViewer>
+            <Canvas Name="myChart" Grid.Row="1" HorizontalAlignment="Left" Height="100" Margin="10,50"  VerticalAlignment="Top" />
+
 
     </Grid>
 </Window>

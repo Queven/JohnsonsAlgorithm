@@ -163,57 +163,60 @@ namespace MTD_Proj_01
                 }
                 sortedTasks[i].end[M2] = sortedTasks[i].start[M2] + sortedTasks[i].duration[M2];
             }
-            DrawGantt(sortedTasks);
+            DrawnCharts(sortedTasks);
         }
 
-        private void DrawGantt(List<MachineTask> tasks)
+        private void DrawnCharts(List<MachineTask> tasks)
         {
             //var a = test();
             //S//tringBuilder sorted = new StringBuilder("Kolejność: ");
             var sorted = tasks.Select(s => s.indexTask.ToString()).ToList();
+            //int w = 0;
             sorted.Insert(0, "Kolejność: ");
             foreach (var task in tasks)
             {
-                Line ln = new Line();
-                Label title = new Label();
-                Label title2 = new Label();
-                title.Content = "M1";
-                title2.Content = "M2";
-                ln.Stroke = new SolidColorBrush(colorProperty[task.indexTask % colorProperty.Length]);
-                ln.Fill = new SolidColorBrush(Colors.Black);
-                ln.StrokeThickness = 50.0;
-                ln.X1 = 30+ task.start[M1] *50;
-                ln.X2 = 30+ task.end[M1] * 50;
-                ln.Y1 = 0;
-                ln.Y2 = 0;
-                ln.ToolTip = task.indexTask;
-                Line ln2 = new Line();
-                ln2.Stroke = new SolidColorBrush(colorProperty[task.indexTask % colorProperty.Length]);
-                ln2.Fill = new SolidColorBrush(Colors.Black);
-                ln2.StrokeThickness = 50.0;
-                ln2.X1 =30+ task.start[M2] *50 ;
-                ln2.X2 = 30+ task.end[M2] *50;
-                ln2.Y1 = 60;
-                ln2.Y2 = 60;
-                ln2.ToolTip = task.indexTask;
-                Canvas.SetTop(title, 0);
-                Canvas.SetLeft(title, 0);
-                myChart.Children.Add(title);
-                Canvas.SetTop(title2, 60);
-                Canvas.SetLeft(title2, 0);
-                myChart.Children.Add(title2);
-                Label l = new Label();
-                l.Content = "Z" + task.indexTask;
-                Label l2 = new Label();
-                l2.Content = "Z" + task.indexTask;
-                myChart.Children.Add(ln);
-                myChart.Children.Add(ln2);
-                Canvas.SetTop(l, 0);
-                Canvas.SetLeft(l, ln.X1 + 1);
-                myChart.Children.Add(l);
-                Canvas.SetTop(l2, 60);
-                Canvas.SetLeft(l2, ln2.X1 + 1);
-                myChart.Children.Add(l2);
+                DrawChartTask(task, M1, 0);
+                DrawChartTask(task, M2, 60);
+                //Line ln = new Line();
+                //Label title = new Label();
+                //Label title2 = new Label();
+                //title.Content = "M1";
+                //title2.Content = "M2";
+                //ln.Stroke = new SolidColorBrush(colorProperty[task.indexTask % colorProperty.Length]);
+                //ln.Fill = new SolidColorBrush(Colors.Black);
+                //ln.StrokeThickness = 50.0;
+                //ln.X1 = 30+ task.start[M1] *50;
+                //ln.X2 = 30+ task.end[M1] * 50;
+                //ln.Y1 = 0;
+                //ln.Y2 = 0;
+                //ln.ToolTip = task.indexTask;
+                //Line ln2 = new Line();
+                //ln2.Stroke = new SolidColorBrush(colorProperty[task.indexTask % colorProperty.Length]);
+                //ln2.Fill = new SolidColorBrush(Colors.Black);
+                //ln2.StrokeThickness = 50.0;
+                //ln2.X1 =30+ task.start[M2] *50 ;
+                //ln2.X2 = 30+ task.end[M2] *50;
+                //ln2.Y1 = 60;
+                //ln2.Y2 = 60;
+                //ln2.ToolTip = task.indexTask;
+                //Canvas.SetTop(title, 0);
+                //Canvas.SetLeft(title, 0);
+                //myChart.Children.Add(title);
+                //Canvas.SetTop(title2, 60);
+                //Canvas.SetLeft(title2, 0);
+                //myChart.Children.Add(title2);
+                //Label l = new Label();
+                //l.Content = "Z" + task.indexTask;
+                //Label l2 = new Label();
+                //l2.Content = "Z" + task.indexTask;
+                //myChart.Children.Add(ln);
+                //myChart.Children.Add(ln2);
+                //Canvas.SetTop(l, 0);
+                //Canvas.SetLeft(l, ln.X1 + 1);
+                //myChart.Children.Add(l);
+                //Canvas.SetTop(l2, 60);
+                //Canvas.SetLeft(l2, ln2.X1 + 1);
+                //myChart.Children.Add(l2);
             }
             Label label = new Label();
             label.Content = string.Join(" Z",sorted);
@@ -225,9 +228,34 @@ namespace MTD_Proj_01
             Canvas.SetTop(label2, 150);
             Canvas.SetLeft(label2, 0);
             myChart.Children.Add(label2);
-
         }
 
+        private void DrawChartTask(MachineTask task, int m, int w)
+        {
+            Line ln = new Line();
+            Label title = new Label();
+            Label l = new Label();
+
+            int i = m + 1;
+            title.Content = "M"+i;
+            ln.Stroke = new SolidColorBrush(colorProperty[task.indexTask % colorProperty.Length]);
+            ln.Fill = new SolidColorBrush(Colors.Black);
+            ln.StrokeThickness = 50.0;
+            ln.X1 = 30 + task.start[m] * 20;
+            ln.X2 = 30 + task.end[m] * 20;
+            ln.Y1 = w;
+            ln.Y2 = w;
+            ln.ToolTip = task.indexTask;
+            l.Content = "Z" + task.indexTask;
+            myChart.Children.Add(ln);
+            Canvas.SetTop(title, w);
+            Canvas.SetLeft(title, 0);
+            myChart.Children.Add(title);
+            Canvas.SetTop(l, w);
+            Canvas.SetLeft(l, ln.X1 + 1);
+            myChart.Children.Add(l);
+            
+        }
 
         public Color[] colorProperty
         {
