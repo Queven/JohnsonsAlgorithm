@@ -1,0 +1,27 @@
+﻿<Window x:Class="MTD_Proj_01.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MTD_Proj_01"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="1000">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Button x:Name="button" Grid.Row="0" Content="Rysuj wykres"  HorizontalAlignment="Left" Margin="432,10,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
+        <Button x:Name="generateTask" Grid.Row="0" Content="Generuj zadania" HorizontalAlignment="Left" Margin="309,10,0,0" VerticalAlignment="Top" Width="107" Click="generateTask_Click"/>
+        <RadioButton x:Name="number2" Grid.Row="0" GroupName="numberOfMachnine" Content="2" HorizontalAlignment="Left" IsChecked="True" Margin="10,30,0,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="number3" Grid.Row="0" GroupName="numberOfMachnine" Content="3" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label"  Grid.Row="0" Content="Liczba maszyn:" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top" Width="96"/>
+        <Label x:Name="label_Copy"  Grid.Row="0" Content="Liczba zadań:" HorizontalAlignment="Left" Margin="106,4,0,0" VerticalAlignment="Top" Width="96"/>
+        <TextBox x:Name="NumberOfTask" Grid.Row="0" HorizontalAlignment="Left" Height="23" Margin="106,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <DataGrid x:Name="myGrid" Grid.Row="0" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top" Width="497" Height="100"/>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Grid.Row="1">
+            <Canvas Name="myChart" Grid.Row="1" HorizontalAlignment="Left" Height="100" Margin="10,50"  VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True"  />
+        </ScrollViewer>
+
+    </Grid>
+</Window>
