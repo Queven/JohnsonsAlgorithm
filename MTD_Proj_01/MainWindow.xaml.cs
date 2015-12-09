@@ -301,6 +301,10 @@ namespace MTD_Proj_01
             }
 
             var sortedTasks= list1.OrderBy(m => m.duration[M1]).Concat(list2.OrderByDescending(m => m.duration[M2])).ToList();
+            if (isThirdMachine)
+            {
+                //todo
+            }
             return sortedTasks;
         }
     }
