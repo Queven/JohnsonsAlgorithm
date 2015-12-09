@@ -139,7 +139,7 @@ namespace MTD_Proj_01
 
         private void JohnsonsAlgorithm(List<MachineTask> tasks)
         {
-            List<MachineTask> sortedTasks = Sort(tasks, number3.IsChecked.Value);
+            List<MachineTask> sortedTasks = Sort(tasks);
             int currentTick = 0;
             MachineTask prevTask = new MachineTask();
             for (int i = 0; i < sortedTasks.Count; i++)
@@ -163,6 +163,39 @@ namespace MTD_Proj_01
                 }
                 sortedTasks[i].end[M2] = sortedTasks[i].start[M2] + sortedTasks[i].duration[M2];
             }
+
+            if (number3.IsChecked.Value)
+            {
+                if ((sortedTasks.Min(t => t.duration[M1]) >= sortedTasks.Max(t => t.duration[M2])) || (sortedTasks.Min(t => t.duration[M3]) >= sortedTasks.Max(t => t.duration[M2])))
+                {
+                    for (int i = 0; i < sortedTasks.Count; i++)
+                    {
+                        if (i == 0)
+                        {
+                            sortedTasks[i].start[M3] = sortedTasks[i].end[M2];
+                        }
+                        if (i > 0)
+                        {
+                            prevTask = sortedTasks[i - 1];
+                        }
+
+                        if (prevTask != null && i > 0 && prevTask.end[M3] > sortedTasks[i].end[M2])
+                        {
+                            sortedTasks[i].start[M3] = prevTask.end[M3];
+                        }
+                        else
+                        {
+                            sortedTasks[i].start[M3] = sortedTasks[i].end[M2];
+                        }
+                        sortedTasks[i].end[M3] = sortedTasks[i].duration[M3] + sortedTasks[i].start[M3];
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Nie spełnione są warunki zadania dla 3 maszyn!");
+                    return;
+                }
+            }
             DrawnCharts(sortedTasks);
         }
 
@@ -175,22 +208,43 @@ namespace MTD_Proj_01
             {
                 DrawChartTask(task, M1, 0);
                 DrawChartTask(task, M2, 70);
+                if (number3.IsChecked.Value)
+                    DrawChartTask(task, M3, 140);
             }
-
-            Label label = new Label();
-            label.Content = string.Join(" Z", sorted);
-            Canvas.SetTop(label, 120);
-            Canvas.SetLeft(label, 0);
-            myChart.Children.Add(label);
-            Label label2 = new Label();
-            var cMax = tasks.Last().end[M2];
-            label2.Content = "CMAX= " + cMax;
-            Canvas.SetTop(label2, 150);
-            Canvas.SetLeft(label2, 0);
-            myChart.Children.Add(label2);
-            //int step, last;
+            int cMax = 0;
+            if (number3.IsChecked.Value)
+            {
+                cMax = tasks.Last().end[M3];
+                Label label = new Label();
+                label.Content = string.Join(" Z", sorted);
+                Canvas.SetTop(label, 190);
+                Canvas.SetLeft(label, 0);
+                myChart.Children.Add(label);
+                Label label2 = new Label();
+                label2.Content = "CMAX= " + cMax;
+                Canvas.SetTop(label2, 220);
+                Canvas.SetLeft(label2, 0);
+                myChart.Children.Add(label2);
+            }
+            else
+            {
+                Label label = new Label();
+                label.Content = string.Join(" Z", sorted);
+                Canvas.SetTop(label, 120);
+                Canvas.SetLeft(label, 0);
+                myChart.Children.Add(label);
+                Label label2 = new Label();
+                cMax = tasks.Last().end[M2];
+                label2.Content = "CMAX= " + cMax;
+                Canvas.SetTop(label2, 150);
+                Canvas.SetLeft(label2, 0);
+                myChart.Children.Add(label2);
+                //int step, last;
+            }
             AxisX(cMax, 20,25);
             AxisX(cMax, 20, 95);
+            if (number3.IsChecked.Value)
+                AxisX(cMax, 20, 165);
         }
 
         private void AxisX(int cMAX,  int step, int y)
@@ -274,14 +328,14 @@ namespace MTD_Proj_01
 
         }
 
-        private List<MachineTask> Sort(List<MachineTask> tasks, bool isThirdMachine)
+        private List<MachineTask> Sort(List<MachineTask> tasks)
         {
             List<MachineTask> list1 = new List<MachineTask>();
             List<MachineTask> list2 = new List<MachineTask>();
             MachineTask toCompareTask;
             foreach (var task in tasks)
             {
-                if (isThirdMachine)
+                if (number3.IsChecked.Value)
                 {
                     var d1 = task.duration[M1] + task.duration[M2];
                     var d2 = task.duration[M2] + task.duration[M3];
@@ -301,9 +355,20 @@ namespace MTD_Proj_01
             }
 
             var sortedTasks= list1.OrderBy(m => m.duration[M1]).Concat(list2.OrderByDescending(m => m.duration[M2])).ToList();
-            if (isThirdMachine)
+            if (number3.IsChecked.Value)
             {
-                //todo
+                List<MachineTask> resultList = new List<MachineTask>();
+                foreach (var sorted in sortedTasks)
+                {
+                    foreach (var task in tasks)
+                        if (sorted.indexTask == task.indexTask)
+                        {
+                            resultList.Add(task);
+                            tasks.Remove(task);
+                            break;
+                        }
+                }
+                return resultList;
             }
             return sortedTasks;
         }
