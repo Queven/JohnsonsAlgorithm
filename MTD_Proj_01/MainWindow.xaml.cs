@@ -168,57 +168,14 @@ namespace MTD_Proj_01
 
         private void DrawnCharts(List<MachineTask> tasks)
         {
-            //var a = test();
-            //S//tringBuilder sorted = new StringBuilder("Kolejność: ");
             var sorted = tasks.Select(s => s.indexTask.ToString()).ToList();
-            //int w = 0;
+
             sorted.Insert(0, "Kolejność: ");
             foreach (var task in tasks)
             {
                 DrawChartTask(task, M1, 0);
-                DrawChartTask(task, M2, 60);
-                //Line ln = new Line();
-                //Label title = new Label();
-                //Label title2 = new Label();
-                //title.Content = "M1";
-                //title2.Content = "M2";
-                //ln.Stroke = new SolidColorBrush(colorProperty[task.indexTask % colorProperty.Length]);
-                //ln.Fill = new SolidColorBrush(Colors.Black);
-                //ln.StrokeThickness = 50.0;
-                //ln.X1 = 30+ task.start[M1] *50;
-                //ln.X2 = 30+ task.end[M1] * 50;
-                //ln.Y1 = 0;
-                //ln.Y2 = 0;
-                //ln.ToolTip = task.indexTask;
-                //Line ln2 = new Line();
-                //ln2.Stroke = new SolidColorBrush(colorProperty[task.indexTask % colorProperty.Length]);
-                //ln2.Fill = new SolidColorBrush(Colors.Black);
-                //ln2.StrokeThickness = 50.0;
-                //ln2.X1 =30+ task.start[M2] *50 ;
-                //ln2.X2 = 30+ task.end[M2] *50;
-                //ln2.Y1 = 60;
-                //ln2.Y2 = 60;
-                //ln2.ToolTip = task.indexTask;
-                //Canvas.SetTop(title, 0);
-                //Canvas.SetLeft(title, 0);
-                //myChart.Children.Add(title);
-                //Canvas.SetTop(title2, 60);
-                //Canvas.SetLeft(title2, 0);
-                //myChart.Children.Add(title2);
-                //Label l = new Label();
-                //l.Content = "Z" + task.indexTask;
-                //Label l2 = new Label();
-                //l2.Content = "Z" + task.indexTask;
-                //myChart.Children.Add(ln);
-                //myChart.Children.Add(ln2);
-                //Canvas.SetTop(l, 0);
-                //Canvas.SetLeft(l, ln.X1 + 1);
-                //myChart.Children.Add(l);
-                //Canvas.SetTop(l2, 60);
-                //Canvas.SetLeft(l2, ln2.X1 + 1);
-                //myChart.Children.Add(l2);
+                DrawChartTask(task, M2, 70);
             }
-
 
             Label label = new Label();
             label.Content = string.Join(" Z", sorted);
@@ -233,29 +190,11 @@ namespace MTD_Proj_01
             myChart.Children.Add(label2);
             //int step, last;
             AxisX(cMax, 20,25);
-            AxisX(cMax, 20, 85);
-
-            //GeometryGroup xaxis_geom2 = new GeometryGroup();
-            //xaxis_geom2.Children.Add(new LineGeometry(
-            //    new Point(30, 25), new Point(last, 25)));
-            //for (double x = 30; x <= last; x += step)
-            //{
-            //    xaxis_geom2.Children.Add(new LineGeometry(
-            //        new Point(x, 20),
-            //        new Point(x, 30)));
-            //}
-
-            //Path xaxis_path2 = new Path();
-            //xaxis_path2.StrokeThickness = 2;
-            //xaxis_path2.Stroke = Brushes.Black;
-            //xaxis_path2.Data = xaxis_geom2;
-            //myChart.Children.Add(xaxis_path2);
-
+            AxisX(cMax, 20, 95);
         }
 
         private void AxisX(int cMAX,  int step, int y)
         {
-            //step = 20;
             var last = 30 + cMAX * 20;
             var i = 0;
             GeometryGroup xaxis_geom = new GeometryGroup();
@@ -263,7 +202,6 @@ namespace MTD_Proj_01
                 new Point(30, y), new Point(last, y)));
             for (double x = 30; x <= last; x += step)
             {
-
                 xaxis_geom.Children.Add(new LineGeometry(
                     new Point(x, y-5),
                     new Point(x, y+5)));
@@ -336,23 +274,34 @@ namespace MTD_Proj_01
 
         }
 
-        //public Color color(int i)
-        //{
-        //    return (Color)colorProperty[i].GetValue(null, null);
-        //}
-        private List<MachineTask> Sort(List<MachineTask> tasks, bool v)
+        private List<MachineTask> Sort(List<MachineTask> tasks, bool isThirdMachine)
         {
             List<MachineTask> list1 = new List<MachineTask>();
             List<MachineTask> list2 = new List<MachineTask>();
+            MachineTask toCompareTask;
             foreach (var task in tasks)
             {
-                if (task.duration[M1] <= task.duration[M2])
-                    list1.Add(task);
-                else list2.Add(task);
+                if (isThirdMachine)
+                {
+                    var d1 = task.duration[M1] + task.duration[M2];
+                    var d2 = task.duration[M2] + task.duration[M3];
+                    toCompareTask = new MachineTask()
+                    {
+                        indexTask = task.indexTask,
+                        duration = new int[] { d1, d2 }
+                    };
+                }
+                else
+                {
+                    toCompareTask = task;
+                }
+                if (toCompareTask.duration[M1] <= toCompareTask.duration[M2])
+                    list1.Add(toCompareTask);
+                else list2.Add(toCompareTask);
             }
 
-            return list1.OrderBy(m => m.duration[M1]).Concat(list2.OrderByDescending(m => m.duration[M2])).ToList();
-
+            var sortedTasks= list1.OrderBy(m => m.duration[M1]).Concat(list2.OrderByDescending(m => m.duration[M2])).ToList();
+            return sortedTasks;
         }
     }
 }
