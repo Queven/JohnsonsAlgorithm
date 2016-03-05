@@ -23,11 +23,6 @@ namespace MTD_Proj_01
     /// </summary>
     public partial class MainWindow : Window
     {
-        //public int countOfMachine;
-        //public Dictionary<int,int> M1;
-        //public Dictionary<int, int> M2;
-        //public Dictionary<int, int> M3;
-        //public List<MachineTask> Tasks;
         public Random rnd;
         public const int M1 = 0;
         public const int M2 = 1;
@@ -35,11 +30,6 @@ namespace MTD_Proj_01
         public MainWindow()
         {
             InitializeComponent();
-            // countOfMachine = 0;
-            //M1 = new Dictionary<int, int>();
-            //M2 = new Dictionary<int, int>();
-            //M3 = new Dictionary<int, int>();
-            // Tasks = new List<MachineTask>();
             rnd = new Random();
 
         }
